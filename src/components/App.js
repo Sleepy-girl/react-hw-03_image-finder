@@ -1,8 +1,21 @@
 import React, { Component } from 'react';
+import styles from './App.module.css';
 
 class App extends Component {
+  state: [];
+
   render() {
-    return <div></div>;
+    return (
+      <>
+        <Searchbar />
+        <ImageGallery>
+          <ImageGalleryItem />
+        </ImageGallery>
+        <Loader />
+        <Button />
+        <Modal />
+      </>
+    );
   }
 }
 
