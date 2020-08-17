@@ -1,13 +1,15 @@
 import React from 'react';
+import styles from './modal.module.css';
 
 function Modal() {
+  //image передать из ли? или сделать перебор?
   return (
     <>
-      <div className="Overlay">
-        <div className="Modal">
-          <img src="" alt="" />
+      {/* <div className={styles.Overlay}>
+        <div className={styles.Modal}>
+          <img src={image.largeImageURL} alt="" />
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

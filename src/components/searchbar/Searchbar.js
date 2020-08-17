@@ -1,19 +1,24 @@
 import React from 'react';
+import styles from './searchbar.module.css';
 
-function Searchbar() {
+function Searchbar({ onSubmit }) {
   return (
     <>
-      <header className="Searchbar">
-        <form className="SearchForm">
-          <button type="submit" className="SearchForm-button">
-            <span className="SearchForm-button-label">Search</span>
+      <header className={styles.Searchbar}>
+        <form className={styles.SearchForm}>
+          <button
+            type="submit"
+            onClick={onSubmit}
+            className={styles.SearchFormButton}
+          >
+            <span className={styles.SearchFormButtonLabel}>Search</span>
           </button>
 
           <input
-            className="SearchForm-input"
+            className={styles.SearchFormInput}
             type="text"
-            autocomplete="off"
-            autofocus
+            // autocomplete="off"
+            // autofocus
             placeholder="Search images and photos"
           />
         </form>
