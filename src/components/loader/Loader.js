@@ -1,7 +1,18 @@
-import React from 'react';
+// import React, { Component } from 'react';
+// import Loader from 'react-loader-spinner';
 
-function Loader({ loading, children }) {
-  return <>{{ loading } ? <span>Loarding...</span> : { children }}</>;
-}
+// class Loader extends Component {
+//   render() {
+//     return (
+//       <Loader
+//         type="Puff"
+//         color="#00BFFF"
+//         height={100}
+//         width={100}
+//         timeout={3000} //3 secs
+//       />
+//     );
+//   }
+// }
 
-export default Loader;
+// export default Loader;

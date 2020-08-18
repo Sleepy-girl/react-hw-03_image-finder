@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Searchbar from '../components/searchbar/Searchbar';
-import Loader from '../components/loader/Loader';
+// import Loader from '../components/loader/Loader';
+import Loader from 'react-loader-spinner';
 import ImageGallery from '../components/imageGallery/ImageGallery';
 import ImageGalleryItem from '../components/imageGalleryItem/ImageGalleryItem';
 import Button from '../components/button/Button';
@@ -9,6 +10,7 @@ import imagesApi from '../service/imagesApi';
 
 // import styles from './App.module.css';
 // { id: '', webformatURL: '', largeImageURL: '' }
+
 class App extends Component {
   state = {
     images: [],
@@ -38,6 +40,8 @@ class App extends Component {
   fetchImages = () => {
     const { searchQuery, page } = this.state;
 
+    this.setState({ loading: true });
+
     imagesApi
       .fetchImagesWithQuery(searchQuery)
       .then(images =>
@@ -59,15 +63,22 @@ class App extends Component {
     return (
       <>
         <Searchbar onSubmit={this.handleSearchFormSubmit} />
-        {error && <span>oops</span>}
-        {this.state.loading ? (
-          <Loader loading={loading} />
-        ) : (
-          <ImageGallery>
-            {images.length > 0 && <ImageGalleryItem images={images} />}
-            {images.length > 0 && <Button onClick={this.fetchImages} />}
-            {/* <Modal /> */}
-          </ImageGallery>
+        {error && <span>Error. Something went wrong</span>}
+        <ImageGallery>
+          {images.length > 0 && <ImageGalleryItem images={images} />}
+          {images.length > 0 && !loading && (
+            <Button onClick={this.fetchImages} />
+          )}
+          {/* <Modal /> */}
+        </ImageGallery>
+        {loading && (
+          <Loader
+            type="Puff"
+            color="#00BFFF"
+            height={100}
+            width={100}
+            timeout={3000} //3 secs
+          />
         )}
       </>
     );
