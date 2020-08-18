@@ -5,7 +5,8 @@ import ImageGallery from '../components/imageGallery/ImageGallery';
 import ImageGalleryItem from '../components/imageGalleryItem/ImageGalleryItem';
 import Button from '../components/button/Button';
 import Modal from '../components/modal/Modal';
-import axios from 'axios';
+import imagesApi from '../service/imagesApi';
+
 // import styles from './App.module.css';
 // { id: '', webformatURL: '', largeImageURL: '' }
 class App extends Component {
@@ -13,29 +14,24 @@ class App extends Component {
     images: [],
     loading: false,
     error: null,
+    searchQuery: '',
+    page: '',
   };
 
   componentDidMount() {
     this.setState({
       loading: true,
     });
-    const KEY_API = '17611748-6d67051009b1653d75232e8c8';
-    axios
-      .get(
-        `https://pixabay.com/api/?q=${'cat'}&page=1&key=${KEY_API}&image_type=photo&orientation=horizontal&per_page=12`,
-      )
-      .then(response => {
-        this.setState({
-          images: response.data.hits,
-        });
-        // console.log(this.state.images);
-      })
-      .catch(error => this.setState({ error }))
-      .finally(() => ({ loading: false }));
+
+    this.fetchImages('car');
   }
 
-  onSubmit = () => {
-    //
+  fetchImages = query => {
+    imagesApi
+      .fetchImagesWithQuery(query)
+      .then(images => this.setState({ images }))
+      .catch(error => this.setState({ error }))
+      .finally(() => this.setState({ loading: false }));
   };
 
   render() {
@@ -43,7 +39,7 @@ class App extends Component {
     return (
       <>
         {console.log(images)};
-        <Searchbar onSubmit={this.onSubmit} />
+        <Searchbar onSubmit={this.fetchImages} />
         {/* {error && <span>oops</span>} */}
         {/* {this.state.loading ? (
           <Loader loading={loading} />
