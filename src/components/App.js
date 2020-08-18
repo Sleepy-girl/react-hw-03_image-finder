@@ -15,42 +15,60 @@ class App extends Component {
     loading: false,
     error: null,
     searchQuery: '',
-    page: '',
+    page: 0,
   };
 
-  componentDidMount() {
-    this.setState({
-      loading: true,
-    });
+  // componentDidMount() {
+  //   // this.setState({
+  //   //   loading: true,
+  //   // });
+  //   // this.fetchImages();
+  // }
 
-    this.fetchImages('car');
+  componentDidUpdate(prevProps, prevState) {
+    const prevQuery = prevState.searchQuery;
+    const nextQuery = this.state.searchQuery;
+
+    if (prevQuery !== nextQuery) {
+      // console.log('можно делать запрос');
+      this.fetchImages();
+    }
   }
 
-  fetchImages = query => {
+  fetchImages = () => {
+    const { searchQuery, page } = this.state;
+
     imagesApi
-      .fetchImagesWithQuery(query)
-      .then(images => this.setState({ images }))
+      .fetchImagesWithQuery(searchQuery)
+      .then(images =>
+        this.setState(prevState => ({
+          images: [...prevState.images, ...images],
+          page: prevState.page + 1,
+        })),
+      )
       .catch(error => this.setState({ error }))
       .finally(() => this.setState({ loading: false }));
   };
 
+  handleSearchFormSubmit = query => {
+    this.setState({ searchQuery: query, page: 0, images: [] });
+  };
+
   render() {
-    const { images, loading } = this.state;
+    const { images, loading, error } = this.state;
     return (
       <>
-        {console.log(images)};
-        <Searchbar onSubmit={this.fetchImages} />
-        {/* {error && <span>oops</span>} */}
-        {/* {this.state.loading ? (
+        <Searchbar onSubmit={this.handleSearchFormSubmit} />
+        {error && <span>oops</span>}
+        {this.state.loading ? (
           <Loader loading={loading} />
-        ) : ( */}
-        <ImageGallery>
-          <ImageGalleryItem images={images} />
-        </ImageGallery>
-        {/* )} */}
-        {/* {images.length > 0 && ( */}
-        {/* <Button />
-        <Modal /> */}
+        ) : (
+          <ImageGallery>
+            {images.length > 0 && <ImageGalleryItem images={images} />}
+            {images.length > 0 && <Button onClick={this.fetchImages} />}
+            {/* <Modal /> */}
+          </ImageGallery>
+        )}
       </>
     );
   }
