@@ -5,10 +5,10 @@ import Loader from 'react-loader-spinner';
 import ImageGallery from '../components/imageGallery/ImageGallery';
 import ImageGalleryItem from '../components/imageGalleryItem/ImageGalleryItem';
 import Button from '../components/button/Button';
-import Modal from '../components/modal/Modal';
 import imagesApi from '../service/imagesApi';
+import Modal from '../components/modal/Modal';
 
-// import styles from './App.module.css';
+import styles from './App.module.css';
 // { id: '', webformatURL: '', largeImageURL: '' }
 
 class App extends Component {
@@ -18,6 +18,8 @@ class App extends Component {
     error: null,
     searchQuery: '',
     page: 0,
+    largeImageURL: null,
+    showModal: false,
   };
 
   // componentDidMount() {
@@ -32,13 +34,16 @@ class App extends Component {
     const nextQuery = this.state.searchQuery;
 
     if (prevQuery !== nextQuery) {
-      // console.log('можно делать запрос');
-      this.fetchImages();
+      this.fetchImages(); //запрос
+      // window.scrollTo({
+      //   top: document.documentElement.scrollHeight,
+      //   behavior: 'smooth',
+      // });
     }
   }
 
   fetchImages = () => {
-    const { searchQuery, page } = this.state;
+    const { searchQuery } = this.state;
 
     this.setState({ loading: true });
 
@@ -58,18 +63,43 @@ class App extends Component {
     this.setState({ searchQuery: query, page: 0, images: [] });
   };
 
+  toggleSrc = largeImageURL => {
+    this.setState(prevState => ({
+      showModal: !prevState.showModal,
+      largeImageURL: largeImageURL,
+    }));
+    console.log('toggleSrc');
+  };
+
+  closeModal = () => {
+    this.setState(prevState => ({
+      showModal: !prevState.showModal,
+      largeImageURL: null,
+    }));
+    console.log('toggleSrc');
+  };
+
   render() {
-    const { images, loading, error } = this.state;
+    const { images, loading, error, showModal, largeImageURL } = this.state;
     return (
-      <>
+      <div className={styles.App}>
         <Searchbar onSubmit={this.handleSearchFormSubmit} />
         {error && <span>Error. Something went wrong</span>}
         <ImageGallery>
-          {images.length > 0 && <ImageGalleryItem images={images} />}
+          {images.length > 0 && (
+            <ImageGalleryItem
+              images={images}
+              // showModal={showModal}
+              onClick={this.toggleSrc}
+            />
+          )}
           {images.length > 0 && !loading && (
             <Button onClick={this.fetchImages} />
           )}
-          {/* <Modal /> */}
+          {showModal && (
+            <Modal imageLarge={largeImageURL} onClose={this.closeModal} />
+          )}
+          {/* {largeImageURL && <Modal />} */}
         </ImageGallery>
         {loading && (
           <Loader
@@ -77,10 +107,10 @@ class App extends Component {
             color="#00BFFF"
             height={100}
             width={100}
-            timeout={3000} //3 secs
+            // timeout={3000}
           />
         )}
-      </>
+      </div>
     );
   }
 }

@@ -7,10 +7,10 @@ function Button({ onClick }) {
       <button type="button" className={styles.Button} onClick={onClick}>
         Lord more
       </button>
-      {/* window.scrollTo({
-      top: document.documentElement.scrollHeight,
-      behavior: 'smooth'
-      }); */}
+      {/* {window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth',
+      })} */}
     </>
   );
 }
