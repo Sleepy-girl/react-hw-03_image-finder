@@ -83,7 +83,11 @@ class App extends Component {
     console.log('toggleSrc');
   };
 
-  closeModal = () => {
+  closeModal = e => {
+    if (e.target.nodeName === 'IMG') {
+      return;
+    }
+
     this.setState(prevState => ({
       showModal: !prevState.showModal,
       largeImageURL: null,
