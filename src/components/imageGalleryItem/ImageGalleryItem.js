@@ -11,16 +11,11 @@ function ImageGalleryItem({ images, showMadal, onClick }) {
           className={styles.ImageGalleryItem}
           onClick={() => onClick(image.largeImageURL)}
         >
-          {/* {!showMadal ? ( */}
           <img
             src={image.webformatURL}
             alt=""
             className={styles.ImageGalleryItemImage}
           />
-          {/* ) : (
-            <Modal src={image.largeImageURL} close={closeModal} />
-          )} */}
-
           {/* {showMadal && <Modal src={image.largeImageURL} onClick={onClick} />} */}
         </li>
       ))}

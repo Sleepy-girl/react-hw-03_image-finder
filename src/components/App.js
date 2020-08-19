@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Searchbar from '../components/searchbar/Searchbar';
-// import Loader from '../components/loader/Loader';
 import Loader from 'react-loader-spinner';
 import ImageGallery from '../components/imageGallery/ImageGallery';
 import ImageGalleryItem from '../components/imageGalleryItem/ImageGalleryItem';
@@ -9,7 +8,6 @@ import imagesApi from '../service/imagesApi';
 import Modal from '../components/modal/Modal';
 
 import styles from './App.module.css';
-// { id: '', webformatURL: '', largeImageURL: '' }
 
 class App extends Component {
   state = {
@@ -35,12 +33,22 @@ class App extends Component {
 
     if (prevQuery !== nextQuery) {
       this.fetchImages(); //запрос
-      // window.scrollTo({
-      //   top: document.documentElement.scrollHeight,
-      //   behavior: 'smooth',
-      // });
+      // window.addEventListener('scroll', this.handleScroll);
     }
   }
+
+  // componentWillUnmount() {
+  //   window.removeEventListener('scroll', this.handleScroll);
+  // }
+
+  // handleScroll = e => {
+  //   if (this.state.images.length > 0) {
+  //     scrollTo({
+  //       top: document.documentElement.scrollHeight,
+  //       behavior: 'smooth',
+  //     });
+  //   }
+  // };
 
   fetchImages = () => {
     const { searchQuery } = this.state;
@@ -87,11 +95,7 @@ class App extends Component {
         {error && <span>Error. Something went wrong</span>}
         <ImageGallery>
           {images.length > 0 && (
-            <ImageGalleryItem
-              images={images}
-              // showModal={showModal}
-              onClick={this.toggleSrc}
-            />
+            <ImageGalleryItem images={images} onClick={this.toggleSrc} />
           )}
           {images.length > 0 && !loading && (
             <Button onClick={this.fetchImages} />
