@@ -34,6 +34,10 @@ class App extends Component {
     if (prevQuery !== nextQuery) {
       this.fetchImages(); //запрос
       // window.addEventListener('scroll', this.handleScroll);
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: 'smooth',
+      });
     }
   }
 
